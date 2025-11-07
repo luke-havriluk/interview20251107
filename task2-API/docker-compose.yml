@@ -1,0 +1,42 @@
+services:
+  db-postgres:
+    image: postgres:16
+    container_name: fx_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${PG_USER:-app}
+      POSTGRES_PASSWORD: ${PG_PASSWORD:-app}
+      POSTGRES_DB: ${PG_DB:-rates}
+    ports:
+      - "${PG_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./db/postgres/init.sql:/docker-entrypoint-initdb.d/001_init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${PG_USER:-app} -d ${PG_DB:-rates}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  db-mongo:
+    image: mongo:7
+    container_name: fx_mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_DATABASE: ${MONGO_DB:-rates}
+    ports:
+      - "${MONGO_PORT:-27017}:27017"
+    volumes:
+      - mongodata:/data/db
+      - ./db/mongodb/init.js:/docker-entrypoint-initdb.d/001_init.js:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mongosh --username root --password root --authenticationDatabase admin --eval 'db.adminCommand({ ping: 1 })'"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  pgdata:
+  mongodata:
