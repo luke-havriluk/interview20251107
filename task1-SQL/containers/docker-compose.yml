@@ -1,0 +1,23 @@
+## Simplest setup to start the Postgres based docker image, 
+## with the DB to check the SQL queries
+
+services:
+  task1_sql_pg:
+    container_name: task1_sql_pg
+    image: postgres:${POSTGRES_VERSION}
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "${PG_PORT}:5432"
+    volumes:
+      - task1_sql_pg_data:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  task1_sql_pg_data:
