@@ -185,7 +185,7 @@ Collection fx_daily, document-per-date structure:
 ```
 
 
-Data-Model Design Considerations for Analysts
+## Data-Model Design Considerations for Analysts
 
 While storing the full API payload as `JSONB` or raw JSON documents is convenient
 for ingestion and quick debugging, it’s sub-optimal for analytical use cases.
