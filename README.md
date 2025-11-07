@@ -249,3 +249,11 @@ db.fx_rates.aggregate([
   { $sort: { _id: 1 } }
 ]);
 ```
+
+### Note on secrets within the repo.
+
+> **Note:**  
+> The `.env` files in this repository contain **example credentials**  
+> (e.g. `luke / interview20251107`) that are **for local testing only**.  
+> They are **intentionally** committed so the setup works out-of-the-box  
+> and do **not** represent any real or sensitive secrets.
