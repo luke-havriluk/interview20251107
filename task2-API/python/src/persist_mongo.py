@@ -6,9 +6,16 @@ from pymongo import MongoClient
 COLLECTION = "fx_daily"
 
 def is_available(mongo_uri: str) -> bool:
+    """Ping the *application DB* from the URI (e.g. 'rates'), not admin.
+    This matches our init user that was created on the app DB.
+    """
     try:
         client = MongoClient(mongo_uri, serverSelectionTimeoutMS=3000)
-        client.admin.command("ping")
+        db = client.get_default_database()
+        if db is None:
+            # Fallback if URI has no trailing /db
+            db = client["rates"]
+        db.command({"ping": 1})
         client.close()
         return True
     except Exception:
