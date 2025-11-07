@@ -1,2 +1,29 @@
-.vscode/*
-python/src/__pycache__/*
+# === Global ===
+.DS_Store
+*.log
+*.tmp
+*.swp
+*.bak
+
+# === Python ===
+python/.venv/
+python/__pycache__/
+python/src/__pycache__/
+*.pyc
+
+# === Java / Maven ===
+java/target/
+*.class
+*.jar
+*.war
+*.ear
+
+# === IDEs / Editors ===
+.vscode/
+.idea/
+*.iml
+
+# === Environment / OS ===
+.env
+.env.*
+Thumbs.db
